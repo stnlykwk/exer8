@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using exercise_8.Data;
+using exercise_8.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace exercise_8
@@ -27,11 +28,15 @@ namespace exercise_8
         {
             services.AddControllersWithViews();
 
-            // Database connection string. 
+            // Database connection string.
             // Use hard coded strings here
             //  OR
             // Use environment variables to pass in the server name, db name, user name, and password via Configuration
-            var connection = @"Server=db;Database=tempdb;User=mssql;Password=<YourStrong@Passw0rd>;";
+            var connection = @"Server=db;Database=tempdb;User=sa;Password=<YourStrong@Passw0rd>;";
+
+
+
+
             //var server = Configuration["DatabaseServer"];
             //var database = Configuration["DatabaseName"];
             //var user = Configuration["DatabaseUser"];
@@ -45,7 +50,7 @@ namespace exercise_8
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserContext context)
         {
             if (env.IsDevelopment())
             {
@@ -70,6 +75,16 @@ namespace exercise_8
                     name: "default",
                     pattern: "{controller=Users}/{action=Index}/{id?}");
             });
+
+            var anyPendingMigrations = context.Database.GetPendingMigrations().Any();
+            Console.WriteLine($"\n\nAny pending migrations? {anyPendingMigrations}");
+            if (anyPendingMigrations)
+            {
+                context.Database.Migrate();
+            }
+
+            // Try seeding data
+            SeedData.Initialize(context);
         }
     }
 }
