@@ -31,7 +31,7 @@ namespace exercise_8
             // Use hard coded strings here
             //  OR
             // Use environment variables to pass in the server name, db name, user name, and password via Configuration
-            var connection = @"Server=db;Database=master;User=sa;Password=<YourStrong@Passw0rd>;";
+            var connection = @"Server=db;Database=tempdb;User=mssql;Password=<YourStrong@Passw0rd>;";
             //var server = Configuration["DatabaseServer"];
             //var database = Configuration["DatabaseName"];
             //var user = Configuration["DatabaseUser"];
