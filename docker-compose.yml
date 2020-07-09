@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  exercise-8:
+    image: ${DOCKER_REGISTRY-}exercise8
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-CU5-ubuntu-18.04
+    container_name: db
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "<YourStrong@Passw0rd>"
+    ports:
+      - "1433:1433"
